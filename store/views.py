@@ -11,7 +11,7 @@ def collections(request):
     return render(request , 'store/collections.html', context)
 
 def collectionsview(request, slug):
-    if Category.objects.filter(slug=slug , status = 0):
+    if Category.objects.filter(slug=slug , status=0):
         products = Product.objects.filter(category__slug=slug)
         category = Category.objects.filter(slug=slug).first()
         context = {'products':products, 'category':category}
