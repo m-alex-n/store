@@ -1,9 +1,12 @@
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from . models import Category , Product
 # Create your views here.
 def home(request):
-    return render(request , 'store/index.html')
+    trending_products = Product.objects.filter(trending=1)
+    context = {'trending_products':trending_products}
+    return render(request , 'store/index.html', context )
 
 def collections(request):
     category = Category.objects.filter(status = 0)
@@ -33,3 +36,27 @@ def productview(request, cate_slug, prod_slug):
         messages.error(request, 'no such category found ')
         return redirect('collections')
     return render(request, 'store/products/view.html',context)
+
+def productlistAjax(request):
+    products = Product.objects.filter(status=0).values_list('name',flat=True)
+    productsList = list(products)
+    return JsonResponse(productsList, safe=False)
+
+def searchproduct(request):
+    if request.method =="POST":
+        searchedterm = request.POST.get('productsearch')
+        if searchedterm == "":
+            # if not post then redirect to the previous page 
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            product = Product.objects.filter(name__contains=searchedterm).first()
+            if product :
+                return redirect('collections/'+product.category.slug+'/'+product.slug)
+            else:
+                messages.info(request, "No product matched your search term")
+                # if there is no related search term  return to page 
+                return redirect(request.META.get('HTTP_REFERER'))            
+                
+
+    # if not post then redirect to the current page 
+    return redirect(request.META.get('HTTP_REFERER'))

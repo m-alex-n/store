@@ -22,13 +22,12 @@
                         <div class="card">
                             <a href="{% url 'productview' item.category.slug item.slug%}">
                                 
-                                
                                 <div class="card-body">
                                     <div class="category-image">
                                         <img src="{{item.product_image.url}}" alt="Product image" width= "200" height= "200">
                                     </div>
                                     <h4 class= "text-center"> {{item.name}}</h4>
-                                    <span class="float-start">{{item.original_price | stringformat:'d'| intcomma}}</span>
+                                    <span class="float-start"> <s> {{item.original_price | stringformat:'d'| intcomma}} </s> </span>
                                     <span class="float-end" >{{item.selling_price | stringformat:'d'| intcomma}}</span>
                                 </div>
                             </a>

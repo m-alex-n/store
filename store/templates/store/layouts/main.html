@@ -27,12 +27,25 @@
 
     <link rel="stylesheet" href=" {% static 'css/custom.css' %} ">
 
+    {% comment %} start of owl carousel css {% endcomment %}
+    <link rel="stylesheet" href=" {% static 'css/owl.carousel.min.css' %} ">
+    <link rel="stylesheet" href=" {% static 'css/owl.theme.default.min.css' %} ">
+    {% comment %} end  of owl carousel css {% endcomment %}
+
+    {% comment %} jquery autocomplete css start  {% endcomment %}
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    {% comment %} jquery autocomplete css end  {% endcomment %}
+
+    {% comment %} for tawk plugin {% endcomment %}
+    <meta name="referrer" content="no-referrer-when-downgrade">
+
     <style>
         *{
             font-family: 'Roboto', sans-serif;
         }
         a{
             text-decoration: none;
+            color: #000;
         }
         .product-viewtag {
             background-color: red;
@@ -66,11 +79,60 @@
         <p>hello, you haven't set any content for this page </p>
     {% endblock content %}
 
+    <a href="https://wa.me/254719505217?text=I'm%20interested%20in%20chatting" target="_blank"  class="whatsapp-chat" >
+        <img src=" {% static '/images/whatsapp.png' %} " alt="whatsapp logo" width="60px">
+    </a>
+
     {% comment %} Jquery  {% endcomment %}
     <script src="{% static '/js/jquery.js' %}"></script>
 
+    {% comment %} start Jquery autocomplete {% endcomment %}
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    {% comment %} end Jquery autocomplete {% endcomment %}
+
+    <script>
+        $( function() {
+          var availableTags = [];
+          //ajax to get all names for search bar 
+          $.ajax({
+            method: "GET",
+            url: "/product-list",
+            
+            success: function (response) {
+                //console.log(response)
+                startAutocomplete(response)
+            }
+        });
+        
+        function startAutocomplete(availableTags){
+          $( "#searchproducts" ).autocomplete({
+            source: availableTags
+          });
+        }
+        } );
+        </script>
+
     {% comment %} custom js  {% endcomment %}
     <script src="{% static '/js/custom.js' %}"></script>
+
+    {% comment %} owl carousel {% endcomment %}
+    <script src="{% static '/js/owl.carousel.min.js' %}"></script>
+
+    
+    
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+        s1.async=true;
+        s1.src='https://embed.tawk.to/58a80d3aa9e5680aa3b3f126/1fshp1iuq';
+        s1.charset='UTF-8';
+        s1.setAttribute('crossorigin','*');
+        s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
 
     
     <!--alertify js -->
@@ -93,6 +155,11 @@
 
     {% block scripts %}{% endblock  %}
 
+    {% comment %} razorpay checkout  {% endcomment %}
+    <script src="{% static '/js/checkout.js' %}"></script>
+
+
     
 </body>
+
 </html>

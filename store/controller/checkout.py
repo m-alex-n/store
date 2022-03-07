@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from store.models import Cart ,Order, OrderItem, Product, Profile
@@ -46,7 +47,6 @@ def placeorder(request):
             userprofile.pincode = request.POST.get('pincode')
             userprofile.save()
              
-            
 
         neworder = Order()
         neworder.user = request.user
@@ -61,6 +61,7 @@ def placeorder(request):
         neworder.pincode = request.POST.get('pincode')
 
         neworder.payment_mode = request.POST.get('payment_mode')
+        neworder.payment_id = request.POST.get('payment_id')
 
         cart = Cart.objects.filter(user=request.user)
         cart_total_price = 0
@@ -94,6 +95,26 @@ def placeorder(request):
         # to clear user's cart 
         Cart.objects.filter(user = request.user).delete()
 
-        messages.success(request, "Your order has been placed successfully")
+
+        payMode = request.POST.get('payment_mode')
+
+        if payMode == "Paid by Razorpay" or "Paid by Paypal":
+            return JsonResponse({'status':"Your order has been placed successfully"})
+        else:
+            messages.success(request, "Your order has been placed successfully")
 
     return redirect('/')
+
+
+@login_required(login_url='loginpage')
+def razorpaycheck(request):
+    cart = Cart.objects.filter(user = request.user)
+    total_price = 0
+    for item in cart:
+        total_price = total_price + item.product.selling_price * item.product_qty
+
+    return JsonResponse({  'total_price':total_price  })
+
+
+def orders(request):
+    return HttpResponse("My orders page")

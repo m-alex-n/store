@@ -6,7 +6,7 @@
     <div class="container">
         <a class="text-white" href="{% url 'home' %}">Home /</a>
         <a class="text-white" href="{% url 'cart' %}">Cart </a>
-        
+
     </div>
 </div>
 
@@ -16,7 +16,7 @@
             <div class="col-md-12">
                 <div class="card shadow">
                     <div class="card-body cartdata">
-                        
+
                         {% if cart %}
                             {% for item in cart %}
                                 <div class="row product_data">
@@ -27,7 +27,7 @@
                                         <h6> {{ item.product.name }} </h6>
                                     </div>
                                     <div class="col-md-2 my-auto">
-                                        <h6> Rs {{ item.product.selling_price | stringformat:'d'| intcomma }} </h6>
+                                        <h6> Ksh {{ item.product.selling_price | stringformat:'d'| intcomma }} </h6>
                                     </div>
                                     <div class="col-md-3 my-auto">
                                         <input type="hidden" name="" value=" {{ item.product_id }} " class="prod_id">
@@ -62,4 +62,3 @@
 </div>
 
 {% endblock content %}
-
